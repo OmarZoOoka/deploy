@@ -61,3 +61,7 @@ mongoose.connect(process.env.MONGODB_URL).then(()=>{
 })
 
 
+//route
+app.get("/", ()=>{
+    res.status(201).json({message: "Connected to Backend!"});
+})
