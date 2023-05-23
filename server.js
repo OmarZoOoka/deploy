@@ -8,29 +8,35 @@ require("dotenv").config();
 
 //middleware
 app.use(express.static('public'));
+
+
+const corsOptions = {
+    origin : "https://localhost:3000"
+}
+
 app.use(express.json())
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/contactform.html')
 })
 
-app.post('/', (req,res)=>{
+app.post('/', (req, res) => {
     console.log(req.body);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'contactusx01@gmail.com',
-          pass: 'slhpcufvyingaekq'
+            user: 'contactusx01@gmail.com',
+            pass: 'slhpcufvyingaekq'
         },
         tls: {
-          rejectUnauthorized: false
+            rejectUnauthorized: false
         }
-      });
-      
+    });
+
 
     const mailOptions = {
         from: req.body.email,
@@ -39,21 +45,21 @@ app.post('/', (req,res)=>{
         text: req.body.message
     }
 
-    transporter.sendMail(mailOptions, (error,info)=>{
-        if(error){
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
             console.log(error);
             res.send('error');
-        }else{
+        } else {
             console.log('Email sent: ' + info.response);
             res.send('success')
-        }   
+        }
     })
 })
 
 // connect MongoDB
-mongoose.connect(process.env.MONGODB_URL).then(()=>{
+mongoose.connect(process.env.MONGODB_URL).then(() => {
     const PORT = process.env.PORT || 5000
-    app.listen(PORT,() => {
+    app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`)
     })
 }).catch(err => {
@@ -62,6 +68,6 @@ mongoose.connect(process.env.MONGODB_URL).then(()=>{
 
 
 //route
-app.get("/", ()=>{
-    res.status(201).json({message: "Connected to Backend!"});
+app.get("/", () => {
+    res.status(201).json({ message: "Connected to Backend!" });
 })
