@@ -11,7 +11,7 @@ app.use(express.static('public'));
 
 
 const corsOptions = {
-    origin : "https://localhost:3000"
+    origin : "https://localhost:5000"
 }
 
 app.use(express.json())
